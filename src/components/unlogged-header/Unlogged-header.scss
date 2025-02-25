@@ -1,0 +1,15 @@
+.header{
+  background-color: #fff;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+
+  & h2 {
+    margin-top:-1px;
+    font-family: "Inter", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    color:#000000D9;
+  }
+}

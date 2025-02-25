@@ -1,0 +1,49 @@
+.layout{
+  min-height: 100vh;
+  background: #f0f2f5;
+
+
+  .content{
+    padding:20px;
+    max-width: 941px;
+    width:100%;
+    margin: 0 auto;
+  }
+
+
+  .ant-pagination{
+    margin-top: 26px;
+    &-item {
+      background: transparent !important;
+      border: none;
+      transition: ease-in-out 0.2s;
+
+      &:hover {
+        background: #1890ff !important;
+      }
+
+      & a:hover {
+        color: white !important;
+      }
+
+      &-active {
+        background: #1890ff !important;
+        border-radius: 5px;
+        border: none;
+
+
+        & a {
+          color: white !important;
+        }
+      }
+    }
+  }
+}
+
+.spinContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 85vh;
+}
+
