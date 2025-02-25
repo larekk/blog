@@ -1,13 +1,14 @@
 import React from 'react'
 import { Layout, Button } from 'antd'
-import './Unlogged-header.scss'
 import { Link } from 'react-router-dom'
+
+import styles from './Unlogged-header.module.scss'
 
 const { Header } = Layout
 
 const UnloggedHeader = () => {
   return (
-    <Header className="header">
+    <Header className={styles.header}>
       <Link to={'/'}>
         <h2>Realworld Blog</h2>
       </Link>

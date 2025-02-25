@@ -1,11 +1,17 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Card, Avatar, Tag, Spin, Alert, Button, Popconfirm, message } from 'antd'
-import { HeartOutlined } from '@ant-design/icons'
+import { HeartOutlined, HeartFilled } from '@ant-design/icons'
 import ReactMarkdown from 'react-markdown'
 
-import { deleteArticle, fetchArticleBySlug, resetIsDeleteStatus } from '../store/articlesSlice'
+import {
+  deleteArticle,
+  fetchArticleBySlug,
+  resetIsDeleteStatus,
+  favoriteArticle,
+  unfavoriteArticle,
+} from '../store/articlesSlice'
 
 import styles from './Article.module.scss'
 
@@ -14,7 +20,9 @@ const Article = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { article, status, isDeleteStatus } = useSelector((state) => state.articles)
-  const { user } = useSelector((state) => state.user)
+  const { user, isLoggedIn } = useSelector((state) => state.user)
+  const [isFavorited, setIsFavorited] = useState(article?.favorited || false)
+  const [currentFavoritesCount, setCurrentFavoritesCount] = useState(article?.favoritesCount || 0)
 
   useEffect(() => {
     if (slug) {
@@ -23,12 +31,19 @@ const Article = () => {
   }, [dispatch, slug])
 
   useEffect(() => {
+    if (article) {
+      setIsFavorited(article.favorited)
+      setCurrentFavoritesCount(article.favoritesCount)
+    }
+  }, [article])
+
+  useEffect(() => {
     if (isDeleteStatus === 'succeeded') {
       message.success('Статья успешно удалена!')
       const timer = setTimeout(() => {
         dispatch(resetIsDeleteStatus())
         navigate('/')
-      })
+      }, 1000)
 
       return () => clearTimeout(timer)
     }
@@ -42,8 +57,22 @@ const Article = () => {
     })
   }
 
-  const confirm = () => {
+  const confirmDelete = () => {
     dispatch(deleteArticle(slug))
+  }
+
+  const toggleFavorite = () => {
+    if (!isLoggedIn) return
+
+    if (isFavorited) {
+      dispatch(unfavoriteArticle(slug))
+      setIsFavorited(false)
+      setCurrentFavoritesCount((state) => state - 1)
+    } else {
+      dispatch(favoriteArticle(slug))
+      setIsFavorited(true)
+      setCurrentFavoritesCount((state) => state + 1)
+    }
   }
 
   if (status === 'loading') {
@@ -63,9 +92,13 @@ const Article = () => {
         <div>
           <div className={styles.articles__header__container}>
             <h3 className={styles.article__title}>{article.title}</h3>
-            <div className={styles.heart__container}>
-              <HeartOutlined className={styles.heart} />
-              <div>{article.favoritesCount ?? 0}</div>
+            <div className={styles.heart__container} onClick={toggleFavorite}>
+              {isLoggedIn && isFavorited ? (
+                <HeartFilled className={styles.heart} style={{ color: 'red' }} />
+              ) : (
+                <HeartOutlined className={styles.heart} />
+              )}
+              <div>{currentFavoritesCount}</div>
             </div>
           </div>
           {Array.isArray(article.tagList) &&
@@ -94,7 +127,7 @@ const Article = () => {
             <Popconfirm
               className={styles.modalDelete}
               description="Are you sure to delete this article?"
-              onConfirm={confirm}
+              onConfirm={confirmDelete}
               placement="right"
               okText="Yes"
               cancelText="No"

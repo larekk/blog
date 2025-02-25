@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
 import { Card, Avatar, Tag } from 'antd'
 import { HeartOutlined, HeartFilled } from '@ant-design/icons'
-// eslint-disable-next-line import/order
 import { Link } from 'react-router-dom'
-import './Articles.scss'
-
 import { useDispatch, useSelector } from 'react-redux'
 
 import { favoriteArticle, unfavoriteArticle } from '../store/articlesSlice'
+
+import styles from './Articles.module.scss'
 
 const Articles = ({ slug, title, description, tagList, createdAt, favorited, favoritesCount, author }) => {
   const dispatch = useDispatch()
@@ -36,37 +35,39 @@ const Articles = ({ slug, title, description, tagList, createdAt, favorited, fav
   }
 
   return (
-    <Card className="articles__card">
-      <div className="article__inner__wrapper">
+    <Card className={styles.articles__card}>
+      {' '}
+      {/* Изменил на styles. */}
+      <div className={styles.article__inner__wrapper}>
         <div>
-          <div className="articles__header__container">
-            <h3 className="article__title">
+          <div className={styles.articles__header__container}>
+            <h3 className={styles.article__title}>
               <Link to={`/articles/${slug}`}>{title}</Link>
             </h3>
             <div
-              className="heart__container"
+              className={styles.heart__container}
               onClick={() => {
                 isLoggedIn ? toggleFavorite() : ''
               }}
             >
               {isLoggedIn && isFavorited ? (
-                <HeartFilled className="heart" style={{ color: 'red', transition: '300ms' }} />
+                <HeartFilled className={styles.heart} style={{ color: 'red', transition: '300ms' }} />
               ) : (
-                <HeartOutlined className="heart" />
+                <HeartOutlined className={styles.heart} />
               )}
               {currentFavoritesCount}
             </div>
           </div>
           {tagList?.map((tag, i) => (
-            <Tag className="article__tag" key={i}>
+            <Tag className={styles.article__tag} key={i}>
               {tag}
             </Tag>
           ))}
         </div>
-        <div className="article__writer">
+        <div className={styles.article__writer}>
           <div>
-            <div className="article__writer__name">{author?.username || 'Unknown'}</div>
-            <div className="article__writer__postdate">{formatDate(createdAt)}</div>
+            <div className={styles.article__writer__name}>{author?.username || 'Unknown'}</div>
+            <div className={styles.article__writer__postdate}>{formatDate(createdAt)}</div>
           </div>
           <Avatar
             size={46}
@@ -75,7 +76,7 @@ const Articles = ({ slug, title, description, tagList, createdAt, favorited, fav
           />
         </div>
       </div>
-      <p className="article__content">{description}</p>
+      <p className={styles.article__content}>{description}</p>
     </Card>
   )
 }

@@ -12,6 +12,7 @@ import { fetchUser } from '../store/userSlice'
 import PrivateRouteProfile from '../privateRoutes/Private-route-profile'
 import PrivateRouteNewArticle from '../privateRoutes/Private-route-new-article'
 import NewArticlePage from '../pages/New-article-page'
+import PrivateSignRoute from '../privateRoutes/Private-sign-route'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -27,8 +28,12 @@ const App = () => {
       <Route path="/" element={<BlogPage />} />
       <Route path="/articles" element={<BlogPage />} />
       <Route path="/articles/:slug" element={<ArticlePage />} />
-      <Route path="/sign-up" element={<SignUp />} />
-      <Route path="/sign-in" element={<SignIn />} />
+      <Route element={<PrivateSignRoute />}>
+        <Route path="/sign-up" element={<SignUp />} />
+      </Route>
+      <Route element={<PrivateSignRoute />}>
+        <Route path="/sign-in" element={<SignIn />} />
+      </Route>
       <Route element={<PrivateRouteProfile />}>
         <Route path="/profile" element={<ProfilePage />} />
       </Route>

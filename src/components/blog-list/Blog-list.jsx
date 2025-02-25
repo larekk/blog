@@ -6,7 +6,7 @@ import { createSelector } from 'reselect'
 import { fetchArticles } from '../store/articlesSlice'
 import ArticleCard from '../articles/Articles'
 
-import './Blog-list.scss'
+import styles from './Blog-list.module.scss'
 
 const { Content } = Layout
 
@@ -36,10 +36,10 @@ const BlogList = () => {
   }
 
   return (
-    <Layout className="layout">
-      <Content className="content">
+    <Layout className={styles.layout}>
+      <Content className={styles.content}>
         {status === 'loading' && (
-          <div className="spinContainer">
+          <div className={styles.spinContainer}>
             <Spin size="large" />
           </div>
         )}

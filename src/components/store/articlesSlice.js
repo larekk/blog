@@ -24,8 +24,16 @@ export const fetchArticles = createAsyncThunk('articles/fetchArticles', async (o
 })
 
 export const fetchArticleBySlug = createAsyncThunk('articles/fetchArticleBySlug', async (slug) => {
-  const response = await fetch(`https://blog-platform.kata.academy/api/articles/${slug}`)
+  const url = `https://blog-platform.kata.academy/api/articles/${slug}`
 
+  const headers = {}
+
+  const token = localStorage.getItem('token')
+  if (token) {
+    headers['Authorization'] = `Token ${token}`
+  }
+
+  const response = await fetch(url, { headers })
   const data = await response.json()
   return data.article
 })
@@ -46,7 +54,6 @@ export const createNewArticle = createAsyncThunk(
       const result = await response.json()
 
       if (response.ok) {
-        console.log(result)
         return
       }
 
@@ -137,7 +144,6 @@ export const unfavoriteArticle = createAsyncThunk('articles/unfavoriteArticle', 
     const result = await response.json()
 
     if (response.ok) {
-      console.log(result)
       return
     }
 
@@ -214,15 +220,15 @@ const articlesSlice = createSlice({
         state.isDeleteStatus = 'failed'
       })
       .addCase(updateArticle.pending, (state) => {
-        state.newArticleStatus = 'loading' // Статус загрузки
+        state.newArticleStatus = 'loading'
       })
       .addCase(updateArticle.fulfilled, (state, action) => {
-        state.newArticleStatus = 'succeeded' // Успешно обновлена
-        state.article = action.payload // Сохраняем обновленную статью в state
+        state.newArticleStatus = 'succeeded'
+        state.article = action.payload
       })
       .addCase(updateArticle.rejected, (state, action) => {
-        state.newArticleStatus = 'failed' // Ошибка
-        state.error = action.payload || 'An error occurred' // Сохраняем ошибку
+        state.newArticleStatus = 'failed'
+        state.error = action.error.message
       })
   },
 })

@@ -58,7 +58,6 @@ export const SignInForm = () => {
       <div className={styles.card}>
         <h2 className={styles.title}>Sign In</h2>
 
-        {/* Общая ошибка, если есть */}
         {error?.general && <Alert message={error.general} type="error" showIcon style={{ marginBottom: '16px' }} />}
 
         <Form layout="vertical" onFinish={handleSubmit(onSubmit)} className={styles.form}>

@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
 import { Layout, Button, Avatar } from 'antd'
-import './Logged-in-header.scss'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { fetchUser, logout } from '../store/userSlice'
 import { resetArticle } from '../store/articlesSlice'
+
+import styles from './Logged-in-header.module.scss'
 
 const { Header } = Layout
 
@@ -23,19 +24,19 @@ const LoggedInHeader = () => {
   }, [token])
 
   return (
-    <Header className="header">
+    <Header className={styles.header}>
       <Link to={'/'}>
         <h2>Realworld Blog</h2>
       </Link>
-      <div className="logged-in-header">
+      <div className={styles.loggedInHeader}>
         <Link to={'/new-article'}>
           <Button color="green" variant="outlined" size="small">
             create article
           </Button>
         </Link>
         <Link to={'/profile'}>
-          <div className="userProfile">
-            <div className="username">{user?.username || ''}</div>
+          <div className={styles.userProfile}>
+            <div className={styles.username}>{user?.username || ''}</div>
             <Avatar size={38} src={user?.image || 'https://via.placeholder.com/38'} alt={user?.username || 'Аватар'} />
           </div>
         </Link>
