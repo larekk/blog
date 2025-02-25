@@ -48,6 +48,7 @@ const BlogList = () => {
         {status === 'succeeded' && articles.map((article) => <ArticleCard key={article.slug} {...article} />)}
 
         <Pagination
+          className="ant-pagination" // Используем обычный класс Ant Design
           onChange={onChange}
           current={current}
           showSizeChanger={false}

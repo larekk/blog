@@ -6,7 +6,7 @@
   transition: ease-in-out 0.2s;
   box-shadow: #00000026 0 4px 12px;
 
-  .article__inner__wrapper{
+  .article__inner__wrapper {
     display: flex;
     justify-content: space-between;
   }
@@ -18,10 +18,10 @@
     font-size: 20px;
     line-height: 28px;
     font-weight: 400;
-    margin-top:0;
+    margin-top: 0;
   }
 
-  .article__description{
+  .article__description {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -35,19 +35,18 @@
     margin-top: 16px;
   }
 
-  .deleteArticleButton{
+  .deleteArticleButton {
     width: 78px;
     height: 31px;
     margin-right: 12px;
   }
 
-  .editArticleButton{
+  .editArticleButton {
     width: 65px;
     height: 31px;
   }
 
-
-  .article__content{
+  .article__content {
     color: #000000BF;
     font-family: "Inter", serif;
     font-weight: 400;
@@ -55,35 +54,35 @@
     font-size: 14px;
     line-height: 22px;
 
-    & h3{
+    & h3 {
       font-family: "Inter", serif;
       font-size: 24px;
       line-height: 28px;
       font-weight: 400;
     }
 
-    & h4{
+    & h4 {
       font-family: "Inter", serif;
       font-size: 22px;
       line-height: 28px;
       font-weight: 400;
     }
 
-    & h5{
+    & h5 {
       font-family: "Inter", serif;
       font-size: 20px;
       line-height: 28px;
       font-weight: 400;
     }
 
-    & h6{
+    & h6 {
       font-family: "Inter", serif;
       font-size: 18px;
       line-height: 28px;
       font-weight: 400;
     }
 
-    & span{
+    & span {
       font-family: "Inter", serif;
       font-size: 14px;
       line-height: 22px;
@@ -91,51 +90,50 @@
     }
   }
 
-  .heart__container{
+  .heart__container {
     display: flex;
     align-items: center;
     width: 34px;
     height: 22px;
     margin-top: -20px;
 
-
-    & div{
+    & div {
       font-family: Inter, serif;
       font-size: 14px;
     }
 
-    .heart{
+    .heart {
       margin-left: 13px;
       margin-right: 5px;
     }
   }
 
-  .articles__header__container{
+  .articles__header__container {
     display: flex;
     align-items: center;
     margin-bottom: -14px;
   }
 
-  .article__tag{
-    color:#00000080;
+  .article__tag {
+    color: #00000080;
     border: 1px solid #00000080;
     font-family: 'Inter', serif;
     font-size: 12px;
   }
 
-  .article__writer{
+  .article__writer {
     display: flex;
     align-items: center;
     gap: 5px;
     margin-top: -10px;
 
-    &__name{
+    &__name {
       font-family: 'Inter', serif;
       font-size: 18px;
       text-align: center;
     }
 
-    &__postdate{
+    &__postdate {
       font-family: 'Inter', serif;
       font-size: 12px;
       color: #00000080;
@@ -144,18 +142,16 @@
   }
 }
 
-
 .spinContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 85vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 85vh;
 }
 
-.modalDelete{
+.modalDelete {
   font-family: "Inter", serif !important;
   font-size: 16px !important;
   line-height: 28px !important;
   font-weight: 400 !important;
 }
-

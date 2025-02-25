@@ -5,3 +5,31 @@ body{
   margin: 0;
   padding: 0;
 }
+
+.ant-pagination {
+  margin-top: 26px;
+}
+
+.ant-pagination-item {
+  background: transparent !important;
+  border: none;
+  transition: ease-in-out 0.2s;
+}
+
+.ant-pagination-item:hover {
+  background: #1890ff !important;
+}
+
+.ant-pagination-item a:hover {
+  color: white !important;
+}
+
+.ant-pagination-item-active {
+  background: #1890ff !important;
+  border-radius: 5px;
+  border: none;
+}
+
+.ant-pagination-item-active a {
+  color: white !important;
+}
