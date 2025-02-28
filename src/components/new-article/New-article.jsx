@@ -61,7 +61,7 @@ export const NewArticle = () => {
     if (newArticleStatus === 'succeeded') {
       const timer = setTimeout(() => {
         dispatch(resetNewArticleStatus())
-        if (slug) {
+        if (articleToEdit) {
           navigate(`/articles/${articleToEdit.slug}`)
         } else {
           navigate('/')
