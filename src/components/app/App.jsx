@@ -16,13 +16,13 @@ import PrivateSignRoute from '../privateRoutes/Private-sign-route'
 
 const App = () => {
   const dispatch = useDispatch()
-  const token = useSelector((state) => state.user.token)
+  const { token, user } = useSelector((state) => state.user)
 
   useEffect(() => {
-    if (token) {
+    if (token && !user) {
       dispatch(fetchUser(token))
     }
-  }, [token, dispatch])
+  }, [token, user, dispatch])
   return (
     <Routes>
       <Route path="/" element={<BlogPage />} />

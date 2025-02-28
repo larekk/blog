@@ -3,7 +3,7 @@ import { Layout, Button, Avatar } from 'antd'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { fetchUser, logout } from '../store/userSlice'
+import { fetchUser, logout, selectToken, selectUser } from '../store/userSlice'
 import { resetArticle } from '../store/articlesSlice'
 
 import styles from './Logged-in-header.module.scss'
@@ -11,17 +11,18 @@ import styles from './Logged-in-header.module.scss'
 const { Header } = Layout
 
 const LoggedInHeader = () => {
-  const { token, user } = useSelector((state) => state.user)
+  const user = useSelector(selectUser)
+  const token = useSelector(selectToken)
   const dispatch = useDispatch()
   const logOut = () => {
     return dispatch(logout())
   }
   useEffect(() => {
-    if (token) {
+    if (token && !user) {
       dispatch(fetchUser(token))
       dispatch(resetArticle())
     }
-  }, [token])
+  }, [token, user, dispatch])
 
   return (
     <Header className={styles.header}>

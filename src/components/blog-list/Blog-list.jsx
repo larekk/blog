@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Layout, Pagination, Spin, Alert, Empty } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { createSelector } from 'reselect'
+import { useSearchParams } from 'react-router-dom'
 
 import { fetchArticles } from '../store/articlesSlice'
 import ArticleCard from '../articles/Articles'
@@ -13,26 +14,34 @@ const { Content } = Layout
 const selectArticles = (state) => state.articles.articles
 const selectStatus = (state) => state.articles.status
 const selectTotal = (state) => state.articles.total
+const selectCurrentPage = (state) => state.articles.currentPage
 
-const makeArticlesSelector = createSelector([selectArticles, selectStatus, selectTotal], (articles, status, total) => ({
-  articles,
-  status,
-  total,
-}))
+const makeArticlesSelector = createSelector(
+  [selectArticles, selectStatus, selectTotal, selectCurrentPage],
+  (articles, status, total, currentPage) => ({
+    articles,
+    status,
+    total,
+    currentPage,
+  })
+)
 
 const BlogList = () => {
-  const [current, setCurrent] = useState(1)
+  const [searchParams, setSearchParams] = useSearchParams()
   const dispatch = useDispatch()
 
-  const { articles, status, total } = useSelector(makeArticlesSelector)
+  const current = Number(searchParams.get('page')) || 1
+
+  const { articles, status, total, currentPage } = useSelector(makeArticlesSelector)
 
   useEffect(() => {
-    dispatch(fetchArticles((current - 1) * 20))
-  }, [dispatch, current])
+    if (current !== currentPage) {
+      dispatch(fetchArticles((current - 1) * 20))
+    }
+  }, [dispatch, current, currentPage])
 
   const onChange = (page) => {
-    setCurrent(page)
-    dispatch(fetchArticles((page - 1) * 20))
+    setSearchParams({ page })
   }
 
   return (
@@ -48,7 +57,7 @@ const BlogList = () => {
         {status === 'succeeded' && articles.map((article) => <ArticleCard key={article.slug} {...article} />)}
 
         <Pagination
-          className="ant-pagination" // Используем обычный класс Ant Design
+          className="ant-pagination"
           onChange={onChange}
           current={current}
           showSizeChanger={false}

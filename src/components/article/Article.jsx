@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Card, Avatar, Tag, Spin, Alert, Button, Popconfirm, message } from 'antd'
@@ -21,21 +21,23 @@ const Article = () => {
   const navigate = useNavigate()
   const { article, status, isDeleteStatus } = useSelector((state) => state.articles)
   const { user, isLoggedIn } = useSelector((state) => state.user)
-  const [isFavorited, setIsFavorited] = useState(article?.favorited || false)
-  const [currentFavoritesCount, setCurrentFavoritesCount] = useState(article?.favoritesCount || 0)
+  const [isFavorited, setIsFavorited] = useState(false)
+  const [currentFavoritesCount, setCurrentFavoritesCount] = useState(0)
+
+  const didFetch = useRef(false)
 
   useEffect(() => {
-    if (slug) {
+    if (slug && !didFetch.current) {
       dispatch(fetchArticleBySlug(slug))
+      didFetch.current = true
     }
   }, [dispatch, slug])
-
   useEffect(() => {
-    if (article) {
+    if (article?.slug === slug) {
       setIsFavorited(article.favorited)
       setCurrentFavoritesCount(article.favoritesCount)
     }
-  }, [article])
+  }, [article?.slug, article?.favorited, article?.favoritesCount, slug])
 
   useEffect(() => {
     if (isDeleteStatus === 'succeeded') {

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Form, Input, Button, Alert } from 'antd'
+import React, { useEffect, useState, useRef } from 'react'
+import { Form, Input, Button, Alert, message } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams, useNavigate } from 'react-router-dom'
 
@@ -21,9 +21,12 @@ export const NewArticle = () => {
   const [form] = Form.useForm()
   const newArticleStatus = useSelector((state) => state.articles.newArticleStatus)
   const articleToEdit = useSelector((state) => state.articles.article)
+  const currentUser = useSelector((state) => state.user.user)
 
   const [tagList, setTagList] = useState([])
   const [newTag, setNewTag] = useState('')
+
+  const messageShown = useRef(false)
 
   useEffect(() => {
     if (slug) {
@@ -33,34 +36,40 @@ export const NewArticle = () => {
       form.resetFields()
       setTagList([])
     }
-  }, [dispatch, slug])
+  }, [slug, dispatch, form])
 
   useEffect(() => {
-    if (newArticleStatus === 'succeeded' && slug) {
-      const timer = setTimeout(() => {
-        dispatch(resetNewArticleStatus())
-        navigate(`/articles/${slug}`)
-      }, 1000)
-      return () => clearTimeout(timer)
-    } else if (newArticleStatus === 'succeeded') {
-      const timer = setTimeout(() => {
-        dispatch(resetNewArticleStatus())
+    if (articleToEdit && slug) {
+      if (articleToEdit?.author?.username !== currentUser?.username && !messageShown.current) {
+        console.log('articleToEdit :', articleToEdit)
+        console.log('currentUser :', currentUser)
+        message.error('Вы не можете редактировать чужие статьи!')
+        messageShown.current = true
         navigate('/')
+      } else {
+        form.setFieldsValue({
+          title: articleToEdit.title || '',
+          description: articleToEdit.description || '',
+          body: articleToEdit.body || '',
+        })
+        setTagList(articleToEdit.tagList || [])
+      }
+    }
+  }, [articleToEdit, slug, currentUser, navigate, form])
+
+  useEffect(() => {
+    if (newArticleStatus === 'succeeded') {
+      const timer = setTimeout(() => {
+        dispatch(resetNewArticleStatus())
+        if (slug) {
+          navigate(`/articles/${articleToEdit.slug}`)
+        } else {
+          navigate('/')
+        }
       }, 1000)
       return () => clearTimeout(timer)
     }
-  }, [newArticleStatus, dispatch, navigate])
-
-  useEffect(() => {
-    if (articleToEdit) {
-      form.setFieldsValue({
-        title: articleToEdit.title || '',
-        description: articleToEdit.description || '',
-        body: articleToEdit.body || '',
-      })
-      setTagList(articleToEdit.tagList || [])
-    }
-  }, [articleToEdit])
+  }, [newArticleStatus, dispatch, navigate, slug, articleToEdit])
 
   const handleAddTag = () => {
     if (newTag.trim() && !tagList.includes(newTag)) {
@@ -75,7 +84,6 @@ export const NewArticle = () => {
 
   const onFinish = (values) => {
     const newArticle = { ...values, tagList }
-
     if (slug) {
       dispatch(updateArticle({ slug, article: newArticle }))
     } else {

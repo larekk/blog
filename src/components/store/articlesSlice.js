@@ -54,7 +54,8 @@ export const createNewArticle = createAsyncThunk(
       const result = await response.json()
 
       if (response.ok) {
-        return
+        console.log(result.article)
+        return result.article
       }
 
       return rejectWithValue(result.errors)
@@ -203,8 +204,9 @@ const articlesSlice = createSlice({
       .addCase(createNewArticle.pending, (state) => {
         state.newArticleStatus = 'loading'
       })
-      .addCase(createNewArticle.fulfilled, (state) => {
+      .addCase(createNewArticle.fulfilled, (state, action) => {
         state.newArticleStatus = 'succeeded'
+        state.article = action.payload
       })
       .addCase(createNewArticle.rejected, (state, action) => {
         state.newArticleStatus = 'failed'
