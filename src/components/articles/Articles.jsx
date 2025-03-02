@@ -36,8 +36,6 @@ const Articles = ({ slug, title, description, tagList, createdAt, favorited, fav
 
   return (
     <Card className={styles.articles__card}>
-      {' '}
-      {/* Изменил на styles. */}
       <div className={styles.article__inner__wrapper}>
         <div>
           <div className={styles.articles__header__container}>

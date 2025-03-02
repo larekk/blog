@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
-// Тема: Логин пользователя
 export const loginUser = createAsyncThunk('user/loginUser', async (userData, { rejectWithValue }) => {
   try {
     const response = await fetch('https://blog-platform.kata.academy/api/users/login', {
@@ -165,7 +164,6 @@ const userSlice = createSlice({
   },
 })
 
-// Селекторы рядом с слайсом
 export const selectUser = (state) => state.user.user
 export const selectToken = (state) => state.user.token
 export const selectIsLoggedIn = (state) => state.user.isLoggedIn
